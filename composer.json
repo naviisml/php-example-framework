@@ -1,0 +1,15 @@
+{
+    "name": "naveldev/framework",
+    "description": "Navel Development",
+    "version": "1.0",
+    "keywords": [
+        "laravel",
+        "navelcms",
+        "navel"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Navel\\": "src"
+        }
+    }
+}
