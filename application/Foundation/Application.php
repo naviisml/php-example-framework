@@ -8,7 +8,7 @@ class Application
 
     public function __construct( $base_dir )
     {
-        $this->setBasePath( $base_dir )
+        $this->setBasePath( $base_dir );
 
         // Load BaseProviders
     }
