@@ -2,7 +2,7 @@
     "name": "naveldev/framework",
     "description": "Navel Development",
     "license": "GNU AFFERO GENERAL PUBLIC LICENSE",
-    "version": "1.0",
+    "version": "1.0.2",
     "keywords": [
         "laravel",
         "navelcms",
