@@ -2,25 +2,81 @@
 
 namespace Navel\Foundation;
 
-class Application
+use Navel\Foundation\Container\Container;
+
+class Application extends Container
 {
-    public $base_dir;
+    protected $version = "2.0.0";
 
-    public function __construct( $base_dir )
+    protected $base_dir;
+
+    protected $booted = false;
+
+    protected $isRunningInConsole;
+
+    protected $serviceProviders;
+
+    public function __construct( $base_dir = null )
     {
-        $this->setBasePath( $base_dir );
+        if ($base_dir) {
+            $this->setBasePath( $base_dir );
+        }
 
-        // Load BaseProviders
+        $this->boot();
+        $this->registerBaseBindings();
+        $this->registerBaseServiceProviders();
     }
 
-    public function make()
+    public function boot()
     {
-        return $this;
+        $this->booted = true;
+    }
+
+    private function registerBaseBindings()
+    {
+        $this->instance('app', $this);
+    }
+
+    private function registerBaseServiceProviders()
+    {
+        $this->register(\Navel\Foundation\Routing\Router::class);
+    }
+
+    private function register( $provider, $force = false )
+    {
+        // If the provider is a string, we will resolve it
+        if (is_string($provider)) {
+            $provider = $this->resolveProvider($provider);
+        }
+
+        if($this->isBooted()) {
+            $this->bootProvider( $provider );
+        }
+    }
+
+    public function bootProvider( $provider )
+    {
+        return $provider;
+    }
+
+    public function resolveProvider( $provider )
+    {
+        return new $provider($this);
+    }
+
+    public function make( $key, $value = null )
+    {
+        return parent::make( $key, $value );
     }
 
     public function handle()
     {
         return 'Hello World!';
+    }
+
+    public function isBooted()
+    {
+        return $this->booted ?? null;
     }
 
     private function setBasePath( $base_path )
