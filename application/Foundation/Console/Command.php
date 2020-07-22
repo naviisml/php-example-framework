@@ -2,10 +2,19 @@
 
 namespace Navel\Foundation\Console;
 
-trait Command
+class Command
 {
-    public function __construct($test)
+    protected $commands;
+
+    protected $aliases;
+
+    public function __construct()
     {
-        return $test;
+        
+    }
+
+    public function getCommand()
+    {
+
     }
 }

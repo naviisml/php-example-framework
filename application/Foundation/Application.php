@@ -12,8 +12,6 @@ class Application extends Container
 
     protected $booted = false;
 
-    protected $isRunningInConsole;
-
     protected $serviceProviders;
 
     public function __construct( $base_dir = null )
@@ -49,6 +47,7 @@ class Application extends Container
             $provider = $this->resolveProvider($provider);
         }
 
+        // Check if the application has been booted before executing the Provider
         if($this->isBooted()) {
             $this->bootProvider( $provider );
         }
@@ -62,16 +61,6 @@ class Application extends Container
     public function resolveProvider( $provider )
     {
         return new $provider($this);
-    }
-
-    public function make( $key, $value = null )
-    {
-        return parent::make( $key, $value );
-    }
-
-    public function handle()
-    {
-        return 'Hello World!';
     }
 
     public function isBooted()

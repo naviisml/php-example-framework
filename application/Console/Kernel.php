@@ -2,16 +2,39 @@
 
 namespace Navel\Console;
 
+use Navel\Foundation\Console\Command;
+
 class Kernel
 {
-    public function __construct($test)
+    protected $cli;
+
+    public function __construct()
     {
+
     }
 
-    public function handle()
+    public function handle( $input )
     {
-        echo 'Console Kernel works';
+        try {
+            $this->bootstrap();
 
-        // $this->sendRequestToRouter()
+            var_dump( $this->getCli( $input )->run() );
+        } catch( Exception $e ) {
+            throw new \Exception( $e );
+        }
+    }
+
+    protected function getCli( $input )
+    {
+        if ( is_null( $this->cli ) ) {
+            $this->cli = ( new \Navel\Foundation\Console\Application() )->resolve( $input );
+        }
+
+        return $this->cli;
+    }
+
+    protected function bootstrap()
+    {
+
     }
 }

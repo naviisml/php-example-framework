@@ -4,14 +4,24 @@ namespace Navel\Http;
 
 class Kernel
 {
-    public function __construct($test)
+    public function __construct()
     {
     }
 
-    public function handle()
+    public function handle( $input )
     {
-        echo 'HTTP Kernel works';
+        try {
+            $this->bootstrap();
 
-        // $this->sendRequestToRouter()
+            // $this->sendRequestToRouter()
+        } catch( Exception $e ) {
+            throw new \Exception( $e );
+        }
+
+    }
+
+    protected function bootstrap()
+    {
+
     }
 }
