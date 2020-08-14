@@ -4,16 +4,17 @@ namespace Navel\Foundation\Console;
 
 class Commands
 {
-    protected $name;
+    protected $commands;
 
-    protected $description;
-
-    protected $help;
-
-    protected $hidden;
+    protected $aliases;
 
     public function __construct()
     {
         
+    }
+
+    public function getCommand()
+    {
+
     }
 }

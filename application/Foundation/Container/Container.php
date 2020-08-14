@@ -32,7 +32,7 @@ class Container
         }
 
         // Check if its a function
-        if ( $key === $value || $key instanceof Closure ) {
+        if ( $key === $value || $key instanceof Closure || is_string( $value ) ) {
             $value = $this->build( $value );
         }
 

@@ -18,16 +18,16 @@ class Kernel
         try {
             $this->bootstrap();
 
-            var_dump( $this->getCli( $input )->run() );
+            $this->getCli()->run( $input );
         } catch( Exception $e ) {
             throw new \Exception( $e );
         }
     }
 
-    protected function getCli( $input )
+    protected function getCli()
     {
         if ( is_null( $this->cli ) ) {
-            $this->cli = ( new \Navel\Foundation\Console\Application() )->resolve( $input );
+            $this->cli = ( new \Navel\Foundation\Console\Application() )->resolve();
         }
 
         return $this->cli;

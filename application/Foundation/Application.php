@@ -32,23 +32,23 @@ class Application extends Container
 
     private function registerBaseBindings()
     {
-        $this->instance('app', $this);
+        $this->instance( 'app', $this );
     }
 
     private function registerBaseServiceProviders()
     {
-        $this->register(\Navel\Foundation\Routing\Router::class);
+        $this->register( \Navel\Foundation\Routing\Router::class );
     }
 
     private function register( $provider, $force = false )
     {
         // If the provider is a string, we will resolve it
-        if (is_string($provider)) {
-            $provider = $this->resolveProvider($provider);
+        if ( is_string( $provider ) ) {
+            $provider = $this->resolveProvider( $provider );
         }
 
         // Check if the application has been booted before executing the Provider
-        if($this->isBooted()) {
+        if( $this->isBooted() ) {
             $this->bootProvider( $provider );
         }
     }
@@ -60,7 +60,7 @@ class Application extends Container
 
     public function resolveProvider( $provider )
     {
-        return new $provider($this);
+        return new $provider( $this );
     }
 
     public function isBooted()

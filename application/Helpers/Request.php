@@ -4,14 +4,31 @@ namespace Navel\Helpers;
 
 class Request
 {
+    protected static $instance;
+
+    protected static $request;
+
+    protected static $code;
+
+    protected static $parameters;
+
     public function capture()
     {
-        $arguments = self::getArguments();
+        if( is_null( self::$instance ) ) {
+            self::$instance = new self;
+        }
 
-        return $arguments;
+        self::getConsoleArguments();
+
+        return self::$instance;
     }
 
-    protected function getArguments()
+    public function parameters()
+    {
+        return self::$parameters;
+    }
+
+    protected function getConsoleArguments()
     {
         $arguments = $_SERVER['argv'];
 
@@ -20,6 +37,10 @@ class Request
             unset($arguments[$key]);
         }
 
-        return $arguments;
+        foreach ( $arguments as $key => $value ) {
+            self::$parameters[] = $value;
+        }
+
+        return self::$parameters;
     }
 }
