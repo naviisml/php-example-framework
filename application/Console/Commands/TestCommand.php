@@ -6,9 +6,9 @@ use Navel\Foundation\Console\Command;
 
 class TestCommand extends Command
 {
-    protected $command = "run";
+    protected $command = "serve";
 
-    protected $description = "Starts the development server.";
+    protected $description = "Starts the development server on localhost:80.";
 
     public function handle()
     {

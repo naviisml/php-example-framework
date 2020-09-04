@@ -4,7 +4,7 @@ namespace Navel\Foundation\Console;
 
 use Navel\Foundation\Console\Commands;
 
-class Application extends Commands
+class Kernel
 {
     public function __construct()
     {
@@ -24,7 +24,6 @@ class Application extends Commands
         if ( is_null( $request->parameters() ) ) {
             throw new \Exception('[$parameters] is empty.', 500);
         }
-
 
         var_dump( $request->parameters() );
     }

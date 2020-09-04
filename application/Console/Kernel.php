@@ -18,19 +18,24 @@ class Kernel
         try {
             $this->bootstrap();
 
-            $this->getCli()->run( $input );
+            $this->getKernel()->run( $input );
         } catch( Exception $e ) {
             throw new \Exception( $e );
         }
     }
 
-    protected function getCli()
+    protected function getKernel()
     {
         if ( is_null( $this->cli ) ) {
-            $this->cli = ( new \Navel\Foundation\Console\Application() )->resolve();
+            $this->cli = $this->createKernel()->resolve();
         }
 
         return $this->cli;
+    }
+
+    protected function createKernel()
+    {
+        return new \Navel\Foundation\Console\Kernel();
     }
 
     protected function bootstrap()
