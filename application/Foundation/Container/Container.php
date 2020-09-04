@@ -8,7 +8,7 @@ class Container
 
     protected $aliases;
 
-    public function instance( $key, $value )
+    public function instance( $key, $value = null )
     {
         $this->make( $key, $value );
     }

@@ -30,7 +30,11 @@ class Request
 
     protected function getConsoleArguments()
     {
-        $arguments = $_SERVER['argv'];
+        $arguments = $_SERVER['argv'] ?? null;
+
+        if(!$arguments) {
+            return;
+        }
 
         // Check and remove the 'please' argument
         if (($key = array_search('please', $arguments)) !== false) {
