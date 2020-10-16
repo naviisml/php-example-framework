@@ -2,29 +2,43 @@
 
 namespace Navel\Foundation\Console;
 
-use Navel\Foundation\Console\Commands;
+use Navel\Console\Application;
+use Navel\Console\Commands;
 
 class Kernel
 {
-    public function __construct()
-    {
+    protected $app;
 
+    protected $console;
+
+    protected $commands;
+
+    protected function bootstrap()
+    {
+        $this->app = $this;
+
+        $this->commands[] = ['test'];
     }
 
-    public function resolve()
+    public function handle( $input, $output = null )
     {
-        return $this;
+        try {
+            $this->bootstrap();
+
+            // return exec('php -S navel.local:80');
+
+            return $this->getApplication()->run( $input, $output );
+        } catch( Exception $e ) {
+            throw new \Exception( $e );
+        }
     }
 
-    public function run( $request )
+    private function getApplication()
     {
-        $parameters = $request->parameters();
-
-        // Check if [$parameters] is_null
-        if ( is_null( $request->parameters() ) ) {
-            throw new \Exception('[$parameters] is empty.', 500);
+        if (is_null($this->console)) {
+            return $this->console = (new Application( $this->app ))->resolveCommands( $this->commands );
         }
 
-        var_dump( $request->parameters() );
+        return $this->console;
     }
 }

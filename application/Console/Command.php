@@ -1,8 +1,8 @@
 <?php
 
-namespace Navel\Foundation\Console;
+namespace Navel\Console;
 
-class Commands
+class Command
 {
     protected $name;
 
@@ -14,6 +14,6 @@ class Commands
 
     public function __construct()
     {
-        
+
     }
 }

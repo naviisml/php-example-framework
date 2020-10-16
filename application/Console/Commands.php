@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Foundation\Console;
+namespace Navel\Console;
 
 class Commands
 {
@@ -10,7 +10,7 @@ class Commands
 
     public function __construct()
     {
-        
+
     }
 
     public function getCommand()
