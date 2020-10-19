@@ -11,32 +11,28 @@ class Kernel
 
     protected $console;
 
-    protected $commands;
-
-    protected function bootstrap()
+    public function __construct()
     {
         $this->app = $this;
 
-        $this->commands[] = ['test'];
+        $this->getConsoleApplication();
     }
 
-    public function handle( $input, $output = null )
+    // Run the console application
+    public function handle( $input )
     {
         try {
-            $this->bootstrap();
-
-            // return exec('php -S navel.local:80');
-
-            return $this->getApplication()->run( $input, $output );
+            return $this->getConsoleApplication()->run( $input );
         } catch( Exception $e ) {
             throw new \Exception( $e );
         }
     }
 
-    private function getApplication()
+    // Get the Console application
+    private function getConsoleApplication()
     {
         if (is_null($this->console)) {
-            return $this->console = (new Application( $this->app ))->resolveCommands( $this->commands );
+            return $this->console = (new Application( $this->app ))->resolve();
         }
 
         return $this->console;

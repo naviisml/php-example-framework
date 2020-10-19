@@ -2,7 +2,7 @@
 
 namespace Navel\Console;
 
-use Navel\Foundation\Console\Command;
+use Navel\Console\Commands;
 
 class Application
 {
@@ -15,16 +15,30 @@ class Application
 
     public function run( $input )
     {
-        $parameters = $input->parameters();
+        $command = $this->findCommand( $input );
 
-        if( is_null( $parameters ) ) {
-            throw new \Exception('Please enter a command', 404);
+        if($command->status === false) {
+            // throw new ConsoleException($command->message, $command->code);
         }
 
-        print_r($parameters);
+        // Find command based on $aliases in Commands
+
+        print_r($command);
     }
 
-    public function resolveCommands( $commands )
+    public function findCommand( $input )
+    {
+        $parameters = $input->parameters();
+
+        // No command found
+        if( is_null( $parameters ) ) {
+            return (object) array("status" => false, "code" => 404, "message" => "Command not found");
+        }
+
+        return (object) array("status" => true, "name" => $parameters[0]);
+    }
+
+    public function resolve()
     {
         return $this;
     }

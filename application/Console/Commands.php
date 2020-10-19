@@ -4,9 +4,9 @@ namespace Navel\Console;
 
 class Commands
 {
-    protected $commands;
+    protected $commands = [];
 
-    protected $aliases;
+    protected $aliases = [];
 
     public function __construct()
     {
