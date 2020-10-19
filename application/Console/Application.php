@@ -28,14 +28,14 @@ class Application
 
     public function findCommand( $input )
     {
-        $parameters = $input->parameters();
+        $parameters = $input->parameters(); // Replace with ArgvVar class
 
         // No command found
         if( is_null( $parameters ) ) {
-            return (object) array("status" => false, "code" => 404, "message" => "Command not found");
+            return (object) array("status" => false, "code" => 404, "message" => "Command not found"); // Throw exception
         }
 
-        return (object) array("status" => true, "name" => $parameters[0]);
+        return (object) array("status" => true, "name" => $parameters[0]); // Find and execute command
     }
 
     public function resolve()
