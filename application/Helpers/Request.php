@@ -4,47 +4,103 @@ namespace Navel\Helpers;
 
 class Request
 {
-    protected static $instance;
+    /**
+     * The Request instance
+     */
+    public $request;
 
-    protected static $request;
+    /**
+     * The request method
+     */
+    public $method;
 
-    protected static $code;
+    /**
+     * The list of parameters from the request
+     */
+    public $parameters = [];
 
-    protected static $parameters;
+    /**
+     * The constructor
+     */
+    public function __construct()
+    {
+        $this->capture();
+    }
 
+    /**
+     * Capture the HTTP request
+     *
+     * @return self
+     */
     public function capture()
     {
-        if( is_null( self::$instance ) ) {
-            self::$instance = new self;
-        }
+        $this->getMethod();
+        $this->getParameters();
 
-        self::getConsoleArguments();
-
-        return self::$instance;
+        return $this;
     }
 
+    /**
+     * Retrieve and return the parameters from the request
+     *
+     * @return array $this->parameters
+     */
     public function parameters()
     {
-        return self::$parameters;
+        return $this->getParameters();
     }
 
-    protected function getConsoleArguments()
+    /**
+     * Retrieve a specific parameter from the request
+     *
+     * @param  string $value
+     * @return string $parameter
+     */
+    public function parameter( $value = null )
     {
-        $arguments = $_SERVER['argv'] ?? null;
-
-        if(!$arguments) {
-            return;
+        if (is_null($value)) {
+            throw new \Exception('Parameter value is empty');
         }
 
-        // Check and remove the 'please' argument
-        if (($key = array_search('please', $arguments)) !== false) {
-            unset($arguments[$key]);
+        if ( !$this->parameters[$value] ) {
+            return null;
         }
 
-        foreach ( $arguments as $key => $value ) {
-            self::$parameters[] = $value;
-        }
+        return $this->parameters[$value];
+    }
 
-        return self::$parameters;
+    /**
+     * Retrieve the current header's method
+     *
+     * @return string $this->method
+     */
+    private function getMethod()
+    {
+        $this->method = "unknown";
+
+        return $this->method;
+    }
+
+    /**
+     * Retrieves and returns a list of parameters from the request
+     *
+     * @return array $this->parameters
+     */
+    private function getParameters()
+    {
+        $this->getHttpParameters();
+        $this->getPostParameters();
+
+        return $this->parameters;
+    }
+
+    private function getHttpParameters()
+    {
+        // Add to [$this->httpParameters] && [$this->parameters]
+    }
+
+    private function getPostParameters()
+    {
+        // Add to [$this->postParameters] && [$this->parameters]
     }
 }

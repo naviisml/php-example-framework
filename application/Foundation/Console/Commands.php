@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Console;
+namespace Navel\Foundation\Console;
 
 class Commands
 {

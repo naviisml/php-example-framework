@@ -11,21 +11,21 @@ class Application extends Container
      *
      * @var string
      */
-    protected $version = "2.0.0";
+    public $version = "2.0.0";
 
     /**
      * The application's base directory
      *
      * @var string
      */
-    protected $base_dir;
+    public $base_dir;
 
     /**
      * Wether the application is booted or not.
      *
      * @var boolval
      */
-    protected $booted = false;
+    public $booted = false;
 
     /**
      * The applications service providers
@@ -45,9 +45,15 @@ class Application extends Container
             $this->setBasePath( $base_dir );
         }
 
-        $this->boot();
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
+    }
+
+    public function bootWith( $bootstrappers )
+    {
+        // Add [$bootstrappers] to [$this->bootstrappers] array
+
+        $this->boot();
     }
 
     /**
@@ -57,6 +63,8 @@ class Application extends Container
      */
     public function boot()
     {
+        // Execute [$this->bootstrappers] one by one
+        //
         $this->booted = true;
     }
 
@@ -68,6 +76,7 @@ class Application extends Container
     private function registerBaseBindings()
     {
         $this->instance( 'app', $this );
+        $this->instance( 'request', ( new \Navel\Helpers\Request )->capture() );
     }
 
     /**
@@ -134,7 +143,7 @@ class Application extends Container
 
     /**
      * [setBasePath description]
-     * 
+     *
      * @param [type] $base_path [description]
      */
     private function setBasePath( $base_path )
@@ -142,5 +151,19 @@ class Application extends Container
         $base_path = rtrim( $base_path );
 
         $this->base_dir = $base_path;
+    }
+}
+
+if( !function_exists('app') ) {
+    function app()
+    {
+        return Container::getInstance('app');
+    }
+}
+
+if( !function_exists('request') ) {
+    function request()
+    {
+        return Container::getInstance('request');
     }
 }

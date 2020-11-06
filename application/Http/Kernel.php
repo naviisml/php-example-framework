@@ -2,6 +2,15 @@
 
 namespace Navel\Http;
 
-class Application
+class Kernel
 {
+    /**
+     * Handle a incomming request
+     *
+     * @return [type] [description]
+     */
+    public function handle()
+    {
+
+    }
 }
