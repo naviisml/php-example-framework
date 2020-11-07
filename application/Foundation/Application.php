@@ -28,11 +28,11 @@ class Application extends Container
     public $booted = false;
 
     /**
-     * The applications service providers
+     * The applications boot array
      *
      * @var array
      */
-    protected $serviceProviders;
+    protected $bootstrappers = [];
 
     /**
      * The constructor function
@@ -41,7 +41,7 @@ class Application extends Container
      */
     public function __construct( $base_dir = null )
     {
-        if ($base_dir) {
+        if ( $base_dir ) {
             $this->setBasePath( $base_dir );
         }
 
@@ -49,9 +49,16 @@ class Application extends Container
         $this->registerBaseServiceProviders();
     }
 
-    public function bootWith( $bootstrappers )
+    /**
+     * [bootWith description]
+     * @param  [type] $bootstrappers [description]
+     * @return [type]                [description]
+     */
+    public function bootWith( $bootstrappers = null )
     {
-        // Add [$bootstrappers] to [$this->bootstrappers] array
+        if( is_array( $bootstrappers ) ) {
+            $this->bootstrappers = array_merge( $this->bootstrappers, $bootstrappers );
+        }
 
         $this->boot();
     }
@@ -63,8 +70,15 @@ class Application extends Container
      */
     public function boot()
     {
-        // Execute [$this->bootstrappers] one by one
-        //
+        if( $this->isBooted() ) {
+            return;
+        }
+
+        // Bootstrap the application
+        array_walk($this->bootstrappers, function ($p) {
+            $this->resolveProvider($p);
+        });
+
         $this->booted = true;
     }
 

@@ -20,7 +20,7 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
-
+        \Navel\Http\Providers\AppServiceProvider::class
     ];
 
     /**
@@ -41,9 +41,9 @@ class Kernel
         try {
             $response = $this->sendRequestThroughRouter();
         } catch (Exception $e) {
-
+            $response = $e;
         } catch (Throwable $e) {
-
+            $response = $e;
         }
 
         return $response;
