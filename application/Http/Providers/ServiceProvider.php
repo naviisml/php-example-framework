@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Foundation\Http\Providers;
+namespace Navel\Http\Providers;
 
 class ServiceProvider
 {

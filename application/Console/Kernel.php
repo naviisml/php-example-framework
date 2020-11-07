@@ -3,6 +3,7 @@
 namespace Navel\Console;
 
 use Navel\Foundation\Application;
+use Navel\Foundation\Console\Application as ConsoleApplication;
 use Navel\Helpers\Console\ArgvInput;
 
 class Kernel
@@ -13,6 +14,13 @@ class Kernel
      * @var Navel\Foundation\Application
      */
     protected $app;
+
+    /**
+     * [protected description]
+     *
+     * @var Navel\Foundation\Console\Application
+     */
+    protected $console;
 
     /**
      * The bootstrap classes for the application.
@@ -39,7 +47,9 @@ class Kernel
     public function handle()
     {
         try {
-            $response = $this->sendRequestThroughRouter();
+            $this->bootstrap();
+
+            $response = $this->getConsole()->run();
         } catch (Exception $e) {
             $response = $e;
         } catch (Throwable $e) {
@@ -61,10 +71,12 @@ class Kernel
         }
     }
 
-    private function sendRequestThroughRouter()
+    private function getConsole()
     {
-        $this->bootstrap();
+        if( is_null( $this->console ) ) {
+            $this->console = new ConsoleApplication( $this->app );
+        }
 
-        // Send request to Router
+        return $this->console;
     }
 }

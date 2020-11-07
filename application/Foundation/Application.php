@@ -90,6 +90,7 @@ class Application extends Container
     private function registerBaseBindings()
     {
         $this->instance( 'app', $this );
+        $this->instance( 'router', ( new \Navel\Foundation\Routing\Router ) );
         $this->instance( 'request', ( new \Navel\Helpers\Request )->capture() );
     }
 
@@ -100,7 +101,7 @@ class Application extends Container
      */
     private function registerBaseServiceProviders()
     {
-        $this->register( \Navel\Foundation\Routing\Router::class );
+        $this->register( \Navel\Http\Providers\RoutingServiceProvider::class );
     }
 
     /**
@@ -165,19 +166,5 @@ class Application extends Container
         $base_path = rtrim( $base_path );
 
         $this->base_dir = $base_path;
-    }
-}
-
-if( !function_exists('app') ) {
-    function app()
-    {
-        return Container::getInstance('app');
-    }
-}
-
-if( !function_exists('request') ) {
-    function request()
-    {
-        return Container::getInstance('request');
     }
 }

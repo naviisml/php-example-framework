@@ -4,13 +4,13 @@ namespace Navel\Foundation\Container;
 
 class Container
 {
-    protected $instances;
+    public $instances;
 
-    protected $aliases;
+    public $aliases;
 
     public function instance( $key, $value = null )
     {
-        $this->make( $key, $value );
+        return $this->make( $key, $value );
     }
 
     public function make( $key, $value = null )

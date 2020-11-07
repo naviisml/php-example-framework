@@ -4,7 +4,7 @@ namespace Navel\Http\Providers;
 
 use Navel\Http\Providers\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class RoutingServiceProvider extends ServiceProvider
 {
     /**
      * Handle a incomming request

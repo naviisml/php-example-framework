@@ -2,57 +2,44 @@
 
 namespace Navel\Foundation\Console;
 
-use Navel\Console\Commands;
-use Navel\Container\Container;
-use Navel\Helpers\Console\ArgvInput;
+use Exception;
 
 class Application
 {
-    private $app;
+    /**
+     * The application instance
+     *
+     * @var Navel\Foundation\Application
+     */
+    protected $app;
+
+    protected $commands = [];
+
+    protected $aliases = [];
 
     public function __construct( $app )
     {
         $this->app = $app;
     }
 
-    /**
-     * Run the application
-     *
-     * @param  object $input Request
-     * @return
-     */
-    public function run( $input )
+    public function run()
     {
-        $input = $this->parseArgvInput();
+        // Find command from Request
 
-        if($input->status === false) {
-            throw new \Exception($input->message, $input->code);
-        }
-
-        // Find [$input->command] in Navel\Console\Commands [$aliases]
-        // Return the command function
-        print_r($input);
+        $this->call('command');
     }
 
-    /**
-     * Parse argv input
-     *
-     * @return array
-     */
-    public function parseArgvInput()
+    public function call( $command = null, $callback = null )
     {
-        $parameters = ArgvInput::getParameters();
-
-        // No command input
-        if( is_null( $parameters ) || !$command = $parameters[1] ) {
-            return (object) array("status" => false, "code" => 404, "message" => "Command not found");
+        if( is_null( $command ) ) {
+            throw new Exception( '[$command] could not be found.', 404 );
         }
 
-        return (object) array("status" => true, "parameters" => $parameters, "command" => $command);
-    }
+        if( is_array( $command ) ) {
+            // Get command from array
+        }
 
-    public function resolve()
-    {
-        return $this;
+        // Call [$command]
+        print_r('Execute [$command]');
     }
 }
