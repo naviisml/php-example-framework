@@ -2,6 +2,8 @@
 
 namespace Navel\Foundation\Console;
 
+use Navel\Helpers\File;
+use Navel\Helpers\Console\ArgvInput;
 use Exception;
 
 class Application
@@ -17,29 +19,59 @@ class Application
 
     protected $aliases = [];
 
+    protected $lastOutput = [];
+
     public function __construct( $app )
     {
         $this->app = $app;
+
+        $this->boot();
     }
 
-    public function run()
+    public function boot()
     {
-        // Find command from Request
+        // Load the commands here (from config file: application/config/console.php -> [commands]) ($this->boot())
+    }
 
-        $this->call('command');
+    public function run( $input = null )
+    {
+        $command = $this->getCommand(
+            $input = $input ?: new ArgvInput
+        );
+
+        $this->call( $command );
     }
 
     public function call( $command = null, $callback = null )
     {
-        if( is_null( $command ) ) {
-            throw new Exception( '[$command] could not be found.', 404 );
+        print_r("Execute [{$command}]");
+        // Step 1: Call command [$command]
+        // Step 2: Save the response in [$this->lastOutput]
+        // Step 3: Call [$callback] after [$command]
+        // Step 4: Return [$this->outputBuffer]
+    }
+
+    public function parseCommand( $input )
+    {
+        $command = $input->parameter(1);
+
+        // Check if [$command] parameter is passed
+        if( is_null( $input ) || !$command ) {
+            throw new Exception( "[$command] is null.", 404 );
         }
 
-        if( is_array( $command ) ) {
-            // Get command from array
+        return [ $command, $input->parameters() ?? null ];
+    }
+
+    public function getCommand( $input )
+    {
+        [$command, $parameters] = $this->parseCommand( $input );
+
+        // Check if [$command] exists in [$this->commands]
+        if( !$this->commands[ $command ] ) {
+            throw new Exception( "Command [{$command} doesnt exist.]", 404 );
         }
 
-        // Call [$command]
-        print_r('Execute [$command]');
+        return $command;
     }
 }

@@ -11,7 +11,7 @@ class RoutingServiceProvider extends ServiceProvider
      *
      * @return [type] [description]
      */
-    public function handle()
+    public function boot()
     {
         //
     }

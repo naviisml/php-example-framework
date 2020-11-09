@@ -4,16 +4,16 @@ namespace Navel\Foundation\Console;
 
 class Command
 {
-    protected $name;
+    public $name;
 
-    protected $description;
+    public $description;
 
-    protected $help;
+    public $help;
 
-    protected $hidden;
+    public $hidden;
 
     public function __construct()
     {
-
+        $this->boot();
     }
 }

@@ -3,8 +3,7 @@
 namespace Navel\Console;
 
 use Navel\Foundation\Application;
-use Navel\Foundation\Console\Application as ConsoleApplication;
-use Navel\Helpers\Console\ArgvInput;
+use Navel\Foundation\Console\Application as Console;
 
 class Kernel
 {
@@ -34,7 +33,7 @@ class Kernel
     /**
      * The constructor
      */
-    public function __construct(Application $app)
+    public function __construct( Application $app )
     {
         $this->app = $app;
     }
@@ -50,9 +49,9 @@ class Kernel
             $this->bootstrap();
 
             $response = $this->getConsole()->run();
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             $response = $e;
-        } catch (Throwable $e) {
+        } catch ( Throwable $e ) {
             $response = $e;
         }
 
@@ -66,7 +65,7 @@ class Kernel
      */
     public function bootstrap()
     {
-        if( !$this->app->booted ) {
+        if( ! $this->app->booted ) {
             $this->app->bootWith( $this->bootstrapper );
         }
     }
@@ -74,7 +73,7 @@ class Kernel
     private function getConsole()
     {
         if( is_null( $this->console ) ) {
-            $this->console = new ConsoleApplication( $this->app );
+            $this->console = new Console( $this->app );
         }
 
         return $this->console;

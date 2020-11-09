@@ -94,6 +94,11 @@ class Request
         return $this->parameters;
     }
 
+    public function getFirstParameter()
+    {
+        return $this->parameter(0);
+    }
+
     private function getHttpParameters()
     {
         // Add to [$this->httpParameters] && [$this->parameters]

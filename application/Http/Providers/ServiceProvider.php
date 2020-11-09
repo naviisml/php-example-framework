@@ -11,6 +11,6 @@ class ServiceProvider
      */
     public function __construct()
     {
-        $this->handle();
+        $this->boot();
     }
 }

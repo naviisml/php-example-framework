@@ -2,16 +2,23 @@
 
 namespace Navel\Helpers\Console;
 
-class ArgvInput
+use Navel\Helpers\Request;
+
+class ArgvInput extends Request
 {
-    public static $parameters = [];
+    public function capture()
+    {
+        $this->getArgvar();
+
+        parent::capture();
+    }
 
     /**
      * Contains an array of all the arguments passed to the script when running from the command line.
      *
      * @return array $this->parameters
      */
-    public static function getParameters()
+    public function getArgvar()
     {
         $arguments = $_SERVER["argv"] ?? null;
 
@@ -25,12 +32,12 @@ class ArgvInput
             $parametersExist = preg_match("/\-\-(\w+)\=(\w+)/i", $value, $parameters);
 
             if ( $parametersExist && $parameters[1] && $parameters[2] ) {
-                self::$parameters[$parameters[1]] = $parameters[2];
+                $this->parameters[$parameters[1]] = $parameters[2];
             } else {
-                self::$parameters[$key] = $value;
+                $this->parameters[$key] = $value;
             }
         }
 
-        return self::$parameters;
+        return $this->parameters;
     }
 }
