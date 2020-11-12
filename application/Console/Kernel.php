@@ -31,6 +31,15 @@ class Kernel
     ];
 
     /**
+     * A list of commands provided by the application
+     *
+     * @var array
+     */
+    protected $defaultCommands = [
+        Navel\Foundation\Console\ServeCommand::class,
+    ];
+
+    /**
      * The constructor
      */
     public function __construct( Application $app )
@@ -70,10 +79,15 @@ class Kernel
         }
     }
 
+    public function addCommand( $command )
+    {
+        $this->commands[] = $command;
+    }
+
     private function getConsole()
     {
         if( is_null( $this->console ) ) {
-            $this->console = new Console( $this->app );
+            $this->console = ( new Console( $this->app ) )->resolveCommands( $this->defaultCommands )->resolveCommands( $this->commands ?? null );
         }
 
         return $this->console;

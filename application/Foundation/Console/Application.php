@@ -31,6 +31,7 @@ class Application
     public function boot()
     {
         // Load the commands here (from config file: application/config/console.php -> [commands]) ($this->boot())
+        // Resolve default commands
     }
 
     public function run( $input = null )
@@ -57,19 +58,41 @@ class Application
 
         // Check if [$command] parameter is passed
         if( is_null( $input ) || !$command ) {
-            throw new Exception( "[$command] is null.", 404 );
+            throw new Exception( "[\$command] is null.", 404 );
         }
 
         return [ $command, $input->parameters() ?? null ];
+    }
+
+    public function resolveCommands( $commands )
+    {
+        if ( is_null( $commands ) ) {
+            throw new Exception( "[\$commands] is empty.", 404 );
+        }
+
+        foreach ( $commands as $command ) {
+            $this->add( $command );
+        }
+
+        return $this;
+    }
+
+    public function add( $command )
+    {
+        // Get the command: $name, $description etc etc
+        // Add to arrays
+        $this->commands[] = $command;
     }
 
     public function getCommand( $input )
     {
         [$command, $parameters] = $this->parseCommand( $input );
 
+        print_r( $this->commands );
+
         // Check if [$command] exists in [$this->commands]
-        if( !$this->commands[ $command ] ) {
-            throw new Exception( "Command [{$command} doesnt exist.]", 404 );
+        if( is_null( $this->commands[ $command ] ?? null ) ) {
+            throw new Exception( "Command [{$command}] doesnt exist.", 404 );
         }
 
         return $command;
