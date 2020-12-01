@@ -12,14 +12,21 @@ class Kernel
      *
      * @var Navel\Foundation\Application
      */
-    protected $app;
+    public $app;
 
     /**
      * [protected description]
      *
      * @var Navel\Foundation\Console\Application
      */
-    protected $console;
+    public $console;
+
+    /**
+     * [protected description]
+     *
+     * @var array
+     */
+    protected $commands = [];
 
     /**
      * The bootstrap classes for the application.
@@ -27,16 +34,8 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
-        \Navel\Http\Providers\AppServiceProvider::class
-    ];
-
-    /**
-     * A list of commands provided by the application
-     *
-     * @var array
-     */
-    protected $defaultCommands = [
-        Navel\Foundation\Console\ServeCommand::class,
+        \Navel\Http\Providers\AppServiceProvider::class,
+        \Navel\Http\Providers\ConsoleServiceProvider::class
     ];
 
     /**
@@ -79,15 +78,10 @@ class Kernel
         }
     }
 
-    public function addCommand( $command )
-    {
-        $this->commands[] = $command;
-    }
-
     private function getConsole()
     {
         if( is_null( $this->console ) ) {
-            $this->console = ( new Console( $this->app ) )->resolveCommands( $this->defaultCommands )->resolveCommands( $this->commands ?? null );
+            $this->console = ( new Console( $this->app ) )->resolveCommands( $this->commands );
         }
 
         return $this->console;

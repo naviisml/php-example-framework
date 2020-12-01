@@ -1,9 +1,11 @@
 <?php
 
-namespace Navel\Foundation\Console;
+namespace Navel\Console\Commands;
 
 class Command
 {
+    protected $booted = false;
+
     public $name;
 
     public $description;
@@ -14,6 +16,6 @@ class Command
 
     public function __construct()
     {
-        $this->boot();
+        //
     }
 }

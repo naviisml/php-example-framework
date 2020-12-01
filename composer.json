@@ -1,15 +1,15 @@
 {
     "name": "naveldev/framework",
-    "description": "Navel Development",
+    "description": "Navel Framework",
     "license": "GNU AFFERO GENERAL PUBLIC LICENSE",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "keywords": [
         "navelcms",
         "navel"
     ],
     "autoload": {
         "psr-4": {
-            "Navel\\": "application"
+            "Navel\\": "src"
         }
     }
 }

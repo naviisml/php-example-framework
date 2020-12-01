@@ -1,8 +1,8 @@
 <?php
 
-namespace Navel\Foundation\Console;
+namespace Navel\Console\Commands;
 
-use Navel\Foundation\Console\Command;
+use Navel\Console\Commands\Command;
 
 class TestCommand extends Command
 {
@@ -14,8 +14,8 @@ class TestCommand extends Command
 
     public $hidden = true;
 
-    public function boot()
+    public function run()
     {
-        print_r('Boot [test] command');
+        print_r('Run [test] command');
     }
 }

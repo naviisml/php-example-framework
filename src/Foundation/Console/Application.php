@@ -15,6 +15,13 @@ class Application
      */
     protected $app;
 
+    /**
+     * The console instance
+     *
+     * @var Navel\Foundation\Console\Application
+     */
+    protected $console;
+
     protected $commands = [];
 
     protected $aliases = [];
@@ -24,14 +31,21 @@ class Application
     public function __construct( $app )
     {
         $this->app = $app;
+        $this->console = $this;
 
         $this->boot();
     }
 
     public function boot()
     {
-        // Load the commands here (from config file: application/config/console.php -> [commands]) ($this->boot())
-        // Resolve default commands
+        $this->resolveDefaultCommands();
+    }
+
+    private function resolveDefaultCommands()
+    {
+        $this->resolveCommands([
+            \Navel\Console\Commands\ServeCommand::class
+        ]);
     }
 
     public function run( $input = null )
@@ -43,13 +57,17 @@ class Application
         $this->call( $command );
     }
 
-    public function call( $command = null, $callback = null )
+    public function call( $command = null )
     {
-        print_r("Execute [{$command}]");
-        // Step 1: Call command [$command]
-        // Step 2: Save the response in [$this->lastOutput]
-        // Step 3: Call [$callback] after [$command]
-        // Step 4: Return [$this->outputBuffer]
+        $command = $this->build(
+            $input = $command
+        );
+
+        $output = $command->run();
+
+        $this->lastOutput = $output;
+
+        return $output;
     }
 
     public function parseCommand( $input )
@@ -66,35 +84,47 @@ class Application
 
     public function resolveCommands( $commands )
     {
-        if ( is_null( $commands ) ) {
-            throw new Exception( "[\$commands] is empty.", 404 );
+        if ( !is_array( $commands ) ) {
+            return $this->resolveCommand( $commands );
         }
 
         foreach ( $commands as $command ) {
-            $this->add( $command );
+            $this->resolveCommand( $command );
         }
 
         return $this;
     }
 
-    public function add( $command )
+    public function resolveCommand( $callback )
+    {
+        $command = $this->build( $callback );
+
+        $this->add( $command->name, $callback );
+
+        return $this;
+    }
+
+    public function add( $command, $callback )
     {
         // Get the command: $name, $description etc etc
         // Add to arrays
-        $this->commands[] = $command;
+        $this->commands[ $command ] = $callback;
+    }
+
+    public function build( $value )
+    {
+        return new $value($this);
     }
 
     public function getCommand( $input )
     {
         [$command, $parameters] = $this->parseCommand( $input );
 
-        print_r( $this->commands );
-
         // Check if [$command] exists in [$this->commands]
-        if( is_null( $this->commands[ $command ] ?? null ) ) {
+        if( is_null( $callback = $this->commands[ $command ] ?? null ) ) {
             throw new Exception( "Command [{$command}] doesnt exist.", 404 );
         }
 
-        return $command;
+        return $callback;
     }
 }
