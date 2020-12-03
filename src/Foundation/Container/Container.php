@@ -4,9 +4,12 @@ namespace Navel\Foundation\Container;
 
 class Container
 {
-    public $instances;
+    public static $instances;
 
-    public $aliases;
+    public static function getInstance( $instance )
+    {
+        return self::$instances[ $instance ];
+    }
 
     public function instance( $key, $value = null )
     {
@@ -21,8 +24,8 @@ class Container
     protected function resolve( $key, $value = null )
     {
         // If the key already exists, we will return the current value
-        if( isset( $this->instances[$key] ) ) {
-            return $this->instances[$key];
+        if( isset( self::$instances[$key] ) ) {
+            return self::$instances[$key];
         }
 
         // If the value is null, the key and the value will be binded
@@ -36,7 +39,7 @@ class Container
             $value = $this->build( $value );
         }
 
-        $this->instances[$key] = $value;
+        self::$instances[$key] = $value;
 
         return $value;
     }

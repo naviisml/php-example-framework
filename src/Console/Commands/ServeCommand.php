@@ -2,6 +2,7 @@
 
 namespace Navel\Console\Commands;
 
+use Navel\Helpers\Request;
 use Navel\Helpers\Console\Executable;
 use Navel\Console\Commands\Command;
 
@@ -15,8 +16,26 @@ class ServeCommand extends Command
 
     public $hidden = false;
 
+    protected $executable;
+
     public function run()
     {
-        print_r( $this->description );
+        $command = array(
+            'php',
+            '-S',
+            'localhost:8000',
+            'public/index.php'
+        );
+
+        $this->getExecutable()->find($command);
+    }
+
+    private function getExecutable()
+    {
+        if( is_null( $this->executable ) ) {
+            $this->executable = new Executable;
+        }
+
+        return $this->executable;
     }
 }
