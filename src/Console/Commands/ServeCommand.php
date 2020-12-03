@@ -3,6 +3,7 @@
 namespace Navel\Console\Commands;
 
 use Navel\Helpers\Request;
+use Navel\Helpers\Console\ArgvInput;
 use Navel\Helpers\Console\Executable;
 use Navel\Console\Commands\Command;
 
@@ -20,14 +21,20 @@ class ServeCommand extends Command
 
     public function run()
     {
+        $argv = ArgvInput::test();
+
+        $host = $argv->parameter('host') ?? 'localhost';
+        $port = $argv->parameter('port') ?? '8080';
+
         $command = array(
             'php',
             '-S',
-            'localhost:8000',
-            'public/index.php'
+            "{$host}:{$port}",
+            "-t",
+            "public/"
         );
 
-        $this->getExecutable()->find($command);
+        $this->getExecutable()->find( $command );
     }
 
     private function getExecutable()

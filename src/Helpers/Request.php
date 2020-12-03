@@ -58,11 +58,11 @@ class Request
      */
     public function parameter( $value = null )
     {
-        if (is_null($value)) {
+        if ( is_null( $value ) ) {
             throw new \Exception('Parameter value is empty');
         }
 
-        if ( !$this->parameters[$value] ) {
+        if ( !array_key_exists( $value, $this->parameters ) ) {
             return null;
         }
 

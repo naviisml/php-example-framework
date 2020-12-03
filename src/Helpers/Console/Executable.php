@@ -15,10 +15,24 @@ class Executable
             $command = $command
         );
 
-        print_r($parsedCommand);
-        print_r($command);
+        if( !( $php = $this->execute( $parsedCommand ) ) ) {
+            throw new \Exception("The command doesnt exist!");
+        }
 
-        // Check if the command exists and return command
+        return $php;
+    }
+
+    public function execute( $command )
+    {
+        if ( $php = strtok( exec( $command ), \PHP_EOL ) ) {
+            if ( !is_executable( $php ) ) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return $php;
     }
 
     public function parseCommand( $command )

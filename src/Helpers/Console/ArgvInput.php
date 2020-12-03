@@ -6,6 +6,11 @@ use Navel\Helpers\Request;
 
 class ArgvInput extends Request
 {
+    public static function test()
+    {
+        return (new self);
+    }
+
     public function capture()
     {
         $this->getArgvar();
@@ -29,7 +34,7 @@ class ArgvInput extends Request
 
         // Add parameter to array
         foreach ( $arguments as $key => $value ) {
-            $parametersExist = preg_match("/\-\-(\w+)\=(\w+)/i", $value, $parameters);
+            $parametersExist = preg_match("/\-\-(\w+)\=(.*)/i", $value, $parameters);
 
             if ( $parametersExist && $parameters[1] && $parameters[2] ) {
                 $this->parameters[$parameters[1]] = $parameters[2];
