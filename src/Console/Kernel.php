@@ -63,6 +63,8 @@ class Kernel
             $response = $e;
         }
 
+        print_r( $this->console );
+
         return $response;
     }
 
@@ -76,6 +78,11 @@ class Kernel
         if( ! $this->app->booted ) {
             $this->app->bootWith( $this->bootstrapper );
         }
+    }
+
+    public function registerCommand( $class )
+    {
+        $this->getConsole()->resolveCommand( $class );
     }
 
     private function getConsole()

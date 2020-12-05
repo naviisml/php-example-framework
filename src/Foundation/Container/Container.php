@@ -2,13 +2,28 @@
 
 namespace Navel\Foundation\Container;
 
+use ReflectionClass;
+use ReflectionException;
+
 class Container
 {
-    public static $instances;
+    public static $instance;
 
-    public static function getInstance( $instance )
+    protected $resolved;
+
+    protected $aliases;
+
+    protected $abstractAliases;
+
+    protected $instances;
+
+    public static function getInstance()
     {
-        return self::$instances[ $instance ];
+        if ( is_null( static::$instance ) ) {
+            static::$instance = new static;
+        }
+
+        return static::$instance;
     }
 
     public function instance( $key, $value = null )
@@ -23,15 +38,17 @@ class Container
 
     protected function resolve( $key, $value = null )
     {
+        $key = $this->getAlias( $key );
+
         // If the key already exists, we will return the current value
-        if( isset( self::$instances[$key] ) ) {
-            return self::$instances[$key];
+        if( isset( $this->instances[$key] ) ) {
+            return $this->instances[$key];
         }
 
         // If the value is null, the key and the value will be binded
         // to be used at a later time
         if (!$value) {
-            $value = $key;
+            $value = isset($this->bindings[ $key ]) ? $this->bindings[ $key ] : $key;
         }
 
         // Check if its a function
@@ -39,13 +56,40 @@ class Container
             $value = $this->build( $value );
         }
 
-        self::$instances[$key] = $value;
+        $this->instances[$key] = $value;
+        $this->resolved[$key] = true;
 
         return $value;
     }
 
-    public function build( $value )
+    protected function getAlias( $key )
     {
-        return new $value($this);
+        return isset( $this->aliases[ $key ]) ? $this->getAlias($this->aliases[$key]) : $key;
+    }
+
+    public function alias( $instance, $alias )
+    {
+        if ( $instance === $alias ) {
+            throw new Exception("[{$instance}] is aliased to itself.");
+        }
+
+        $this->aliases[$alias] = $instance;
+
+        $this->abstractAliases[$instance][] = $alias;
+    }
+
+    public function build( $class )
+    {
+        try {
+            $reflector = new ReflectionClass( $class );
+        } catch( ReflectionException $e ) {
+            return;
+        }
+
+        if ( !$reflector->isInstantiable() ) {
+            return $class;
+        }
+
+        return new $class( $this );
     }
 }

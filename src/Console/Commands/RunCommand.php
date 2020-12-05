@@ -7,9 +7,9 @@ use Navel\Helpers\Console\ArgvInput;
 use Navel\Helpers\Console\Executable;
 use Navel\Console\Commands\Command;
 
-class ServeCommand extends Command
+class RunCommand extends Command
 {
-    public $name = 'serve';
+    public $name = 'run';
 
     public $description = 'Start a php test-server.';
 

@@ -22,11 +22,13 @@ class Application
      */
     protected $console;
 
-    protected $commands = [];
+    protected $commands;
 
-    protected $aliases = [];
+    protected $commandList;
 
-    protected $lastOutput = [];
+    protected $aliases;
+
+    protected $lastOutput;
 
     public function __construct( $app )
     {
@@ -44,7 +46,7 @@ class Application
     private function resolveDefaultCommands()
     {
         $this->resolveCommands([
-            \Navel\Console\Commands\ServeCommand::class
+            \Navel\Console\Commands\RunCommand::class
         ]);
     }
 

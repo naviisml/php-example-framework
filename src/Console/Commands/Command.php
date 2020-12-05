@@ -4,7 +4,7 @@ namespace Navel\Console\Commands;
 
 class Command
 {
-    protected $booted = false;
+    protected $app;
 
     public $name;
 
@@ -14,8 +14,8 @@ class Command
 
     public $hidden;
 
-    public function __construct()
+    public function __construct( $app )
     {
-        //
+        $this->app = $app;
     }
 }
