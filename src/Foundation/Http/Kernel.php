@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Http;
+namespace Navel\Foundation\Http;
 
 use Navel\Foundation\Application;
 
@@ -19,13 +19,13 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
-        \Navel\Http\Providers\AppServiceProvider::class
+        \Navel\Foundation\Http\Providers\AppServiceProvider::class
     ];
 
     /**
      * The constructor
      */
-    public function __construct(Application $app)
+    public function __construct( Application $app )
     {
         $this->app = $app;
     }

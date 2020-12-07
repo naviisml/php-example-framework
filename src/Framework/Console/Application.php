@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Foundation\Console;
+namespace Navel\Framework\Console;
 
 use Navel\Helpers\File;
 use Navel\Helpers\Console\ArgvInput;
@@ -22,34 +22,51 @@ class Application
      */
     protected $console;
 
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
     protected $commands;
 
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
     protected $commandList;
 
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
     protected $aliases;
 
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
     protected $lastOutput;
 
-    public function __construct( $app )
+    /**
+     * [__construct description]
+     *
+     * @param [type] $app [description]
+     */
+    public function __construct( \Navel\Foundation\Application $app )
     {
         $this->app = $app;
         $this->console = $this;
-
-        $this->boot();
     }
 
-    public function boot()
-    {
-        $this->resolveDefaultCommands();
-    }
-
-    private function resolveDefaultCommands()
-    {
-        $this->resolveCommands([
-            \Navel\Console\Commands\RunCommand::class
-        ]);
-    }
-
+    /**
+     * [run description]
+     *
+     * @param  [type] $input [description]
+     * @return [type]        [description]
+     */
     public function run( $input = null )
     {
         $command = $this->getCommand(
@@ -59,6 +76,12 @@ class Application
         $this->call( $command );
     }
 
+    /**
+     * [call description]
+     *
+     * @param  [type] $command [description]
+     * @return [type]          [description]
+     */
     public function call( $command = null )
     {
         $command = $this->build(
@@ -72,6 +95,12 @@ class Application
         return $output;
     }
 
+    /**
+     * [parseCommand description]
+     *
+     * @param  [type] $input [description]
+     * @return [type]        [description]
+     */
     public function parseCommand( $input )
     {
         $command = $input->parameter(1);
@@ -84,6 +113,12 @@ class Application
         return [ $command, $input->parameters() ?? null ];
     }
 
+    /**
+     * [resolveCommands description]
+     *
+     * @param  [type] $commands [description]
+     * @return [type]           [description]
+     */
     public function resolveCommands( $commands )
     {
         if ( !is_array( $commands ) ) {
@@ -97,6 +132,12 @@ class Application
         return $this;
     }
 
+    /**
+     * [resolveCommand description]
+     *
+     * @param  [type] $callback [description]
+     * @return [type]           [description]
+     */
     public function resolveCommand( $callback )
     {
         $command = $this->build( $callback );
@@ -106,6 +147,12 @@ class Application
         return $this;
     }
 
+    /**
+     * [add description]
+     *
+     * @param [type] $command  [description]
+     * @param [type] $callback [description]
+     */
     public function add( $command, $callback )
     {
         // Get the command: $name, $description etc etc
@@ -113,11 +160,23 @@ class Application
         $this->commands[ $command ] = $callback;
     }
 
+    /**
+     * [build description]
+     *
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
     public function build( $value )
     {
         return new $value($this);
     }
 
+    /**
+     * [getCommand description]
+     *
+     * @param  [type] $input [description]
+     * @return [type]        [description]
+     */
     public function getCommand( $input )
     {
         [$command, $parameters] = $this->parseCommand( $input );

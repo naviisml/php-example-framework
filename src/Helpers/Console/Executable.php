@@ -4,11 +4,23 @@ namespace Navel\Helpers\Console;
 
 class Executable
 {
+    /**
+     * [call description]
+     *
+     * @param  [type] $input [description]
+     * @return [type]        [description]
+     */
     public function call( $input )
     {
         $command = $this->find( $input );
     }
 
+    /**
+     * [find description]
+     *
+     * @param  [type] $command [description]
+     * @return [type]          [description]
+     */
     public function find( $command )
     {
         $parsedCommand = $this->parseCommand(
@@ -22,6 +34,12 @@ class Executable
         return $php;
     }
 
+    /**
+     * [execute description]
+     *
+     * @param  [type] $command [description]
+     * @return [type]          [description]
+     */
     public function execute( $command )
     {
         if ( $php = strtok( exec( $command ), \PHP_EOL ) ) {
@@ -35,6 +53,12 @@ class Executable
         return $php;
     }
 
+    /**
+     * [parseCommand description]
+     * 
+     * @param  [type] $command [description]
+     * @return [type]          [description]
+     */
     public function parseCommand( $command )
     {
         if( is_array( $command ) ) {

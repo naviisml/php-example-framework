@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Foundation\Routing;
+namespace Navel\Framework\Routing;
 
 class Router
 {
@@ -32,6 +32,9 @@ class Router
      */
     protected $routeAction;
 
+    /**
+     * [__construct description]
+     */
     public function __construct()
     {
 

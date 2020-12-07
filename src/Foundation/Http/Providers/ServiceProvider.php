@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Http\Providers;
+namespace Navel\Foundation\Http\Providers;
 
 use Navel\Foundation\Application;
 

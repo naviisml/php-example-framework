@@ -1,24 +1,54 @@
 <?php
 
-namespace Navel\Console\Commands;
+namespace Navel\Foundation\Console\Commands;
 
 use Navel\Helpers\Request;
 use Navel\Helpers\Console\ArgvInput;
 use Navel\Helpers\Console\Executable;
-use Navel\Console\Commands\Command;
+use Navel\Foundation\Console\Commands\Command;
 
-class RunCommand extends Command
+class ServeCommand extends Command
 {
-    public $name = 'run';
+    /**
+     * [public description]
+     *
+     * @var [type]
+     */
+    public $name = 'serve';
 
+    /**
+     * [public description]
+     *
+     * @var [type]
+     */
     public $description = 'Start a php test-server.';
 
+    /**
+     * [public description]
+     *
+     * @var [type]
+     */
     public $help = 'No information provided.';
 
+    /**
+     * [public description]
+     *
+     * @var [type]
+     */
     public $hidden = false;
 
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
     protected $executable;
 
+    /**
+     * [run description]
+     *
+     * @return [type] [description]
+     */
     public function run()
     {
         $argv = ArgvInput::test();
@@ -37,6 +67,11 @@ class RunCommand extends Command
         $this->getExecutable()->find( $command );
     }
 
+    /**
+     * [getExecutable description]
+     *
+     * @return [type] [description]
+     */
     private function getExecutable()
     {
         if( is_null( $this->executable ) ) {

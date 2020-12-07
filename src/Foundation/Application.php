@@ -2,7 +2,7 @@
 
 namespace Navel\Foundation;
 
-use Navel\Foundation\Container\Container;
+use Navel\Framework\Container\Container;
 
 class Application extends Container
 {
@@ -28,6 +28,13 @@ class Application extends Container
     public $booted = false;
 
     /**
+     * Wether the application has been booted (yet)
+     *
+     * @var boolval
+     */
+    public $hasBeenBootstrapped = false;
+
+    /**
      * The applications boot array
      *
      * @var array
@@ -47,6 +54,7 @@ class Application extends Container
 
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
+        $this->registerCoreContainerAliases();
     }
 
     /**
@@ -56,6 +64,8 @@ class Application extends Container
      */
     public function bootWith( $bootstrappers = null )
     {
+        $this->hasBeenBootstrapped = true;
+
         if( is_array( $bootstrappers ) ) {
             $this->bootstrappers = array_merge( $this->bootstrappers, $bootstrappers );
         }
@@ -89,9 +99,38 @@ class Application extends Container
      */
     private function registerBaseBindings()
     {
+        static::setInstance($this);
+
         $this->instance( 'app', $this );
-        $this->instance( 'router', ( new \Navel\Foundation\Routing\Router ) );
-        $this->instance( 'request', ( new \Navel\Helpers\Request )->capture() );
+
+        $this->instance( Container::class, $this );
+    }
+
+    /**
+     * [bindPathsInContainer description]
+     *
+     * @return [type] [description]
+     */
+    protected function bindPathsInContainer()
+    {
+        $this->instance('path', $this->path());
+    }
+
+    /**
+     * [registerCoreContainerAliases description]
+     *
+     * @return [type] [description]
+     */
+    public function registerCoreContainerAliases()
+    {
+        foreach ([
+            'router'                  => [\Navel\Framework\Routing\Router::class],
+            'request'                  => [\Navel\Helpers\Request::class],
+        ] as $key => $aliases) {
+            foreach ($aliases as $alias) {
+                $this->alias( $key, $alias );
+            }
+        }
     }
 
     /**
@@ -101,7 +140,7 @@ class Application extends Container
      */
     private function registerBaseServiceProviders()
     {
-        $this->register( \Navel\Http\Providers\RoutingServiceProvider::class );
+        $this->register( \Navel\Foundation\Http\Providers\RoutingServiceProvider::class );
     }
 
     /**
@@ -166,5 +205,15 @@ class Application extends Container
         $base_path = rtrim( $base_path );
 
         $this->base_dir = $base_path;
+    }
+
+    /**
+     * [path description]
+     *
+     * @return [type] [description]
+     */
+    public function path()
+    {
+        return $this->base_dir;
     }
 }

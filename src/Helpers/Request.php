@@ -5,22 +5,35 @@ namespace Navel\Helpers;
 class Request
 {
     /**
-     * The Request instance
+     * [public description]
+     *
+     * @var [type]
+     */
+    public $headers;
+
+    /**
+     * [public description]
+     *
+     * @var [type]
      */
     public $request;
 
     /**
-     * The request method
+     * [public description]
+     *
+     * @var [type]
      */
     public $method;
 
     /**
-     * The list of parameters from the request
+     * [public description]
+     *
+     * @var [type]
      */
     public $parameters = [];
 
     /**
-     * The constructor
+     * [__construct description]
      */
     public function __construct()
     {
@@ -35,6 +48,7 @@ class Request
     public function capture()
     {
         $this->getMethod();
+        $this->getHeaders();
         $this->getParameters();
 
         return $this;
@@ -79,6 +93,19 @@ class Request
         $this->method = "unknown";
 
         return $this->method;
+    }
+
+    private function getHeaders()
+    {
+        foreach ($_SERVER as $key => $value) {
+            if (strpos($key, 'HTTP_') === 0) {
+                $this->headers[$key] = $value;
+            } else {
+                $this->server[$key] = $value;
+            }
+        }
+
+        return $this->headers;
     }
 
     /**

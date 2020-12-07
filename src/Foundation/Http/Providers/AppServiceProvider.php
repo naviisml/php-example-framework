@@ -1,10 +1,10 @@
 <?php
 
-namespace Navel\Http\Providers;
+namespace Navel\Foundation\Http\Providers;
 
-use Navel\Http\Providers\ServiceProvider;
+use Navel\Foundation\Http\Providers\ServiceProvider;
 
-class RoutingServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
      * Handle a incomming request

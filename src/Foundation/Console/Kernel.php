@@ -1,9 +1,9 @@
 <?php
 
-namespace Navel\Console;
+namespace Navel\Foundation\Console;
 
 use Navel\Foundation\Application;
-use Navel\Foundation\Console\Application as Console;
+use Navel\Framework\Console\Application as Console;
 
 class Kernel
 {
@@ -34,8 +34,8 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
-        \Navel\Http\Providers\AppServiceProvider::class,
-        \Navel\Http\Providers\ConsoleServiceProvider::class
+        \Navel\Foundation\Http\Providers\AppServiceProvider::class,
+        \Navel\Foundation\Http\Providers\ConsoleServiceProvider::class
     ];
 
     /**
@@ -44,6 +44,8 @@ class Kernel
     public function __construct( Application $app )
     {
         $this->app = $app;
+
+        $this->resolveCoreCommands();
     }
 
     /**
@@ -63,8 +65,6 @@ class Kernel
             $response = $e;
         }
 
-        print_r( $this->console );
-
         return $response;
     }
 
@@ -80,11 +80,36 @@ class Kernel
         }
     }
 
-    public function registerCommand( $class )
+    /**
+     * [registerCommand description]
+     *
+     * @param  [type] $class [description]
+     * @return [type]        [description]
+     */
+    public function registerCommand( $command )
     {
-        $this->getConsole()->resolveCommand( $class );
+        $this->getConsole()->resolveCommand( $command );
     }
 
+    /**
+     * [resolveCoreCommands description]
+     *
+     * @return [type] [description]
+     */
+    protected function resolveCoreCommands()
+    {
+        foreach ([
+            \Navel\Foundation\Console\Commands\ServeCommand::class,
+        ] as $key => $command) {
+            $this->registerCommand( $command );
+        }
+    }
+
+    /**
+     * [getConsole description]
+     *
+     * @return [type] [description]
+     */
     private function getConsole()
     {
         if( is_null( $this->console ) ) {

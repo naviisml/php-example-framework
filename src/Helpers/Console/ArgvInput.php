@@ -6,11 +6,21 @@ use Navel\Helpers\Request;
 
 class ArgvInput extends Request
 {
+    /**
+     * [test description]
+     *
+     * @return [type] [description]
+     */
     public static function test()
     {
         return (new self);
     }
 
+    /**
+     * [capture description]
+     * 
+     * @return [type] [description]
+     */
     public function capture()
     {
         $this->getArgvar();
