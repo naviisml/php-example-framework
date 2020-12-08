@@ -2,6 +2,7 @@
 
 namespace Navel\Framework\Container;
 
+use BoundMethod;
 use ReflectionClass;
 use ReflectionException;
 
@@ -101,19 +102,19 @@ class Container
     {
         $key = $this->getAlias( $key );
 
-        // If the key already exists, we will return the current value
         if( isset( $this->instances[$key] ) ) {
             return $this->instances[$key];
         }
 
-        // If the value is null, the key and the value will be binded
-        // to be used at a later time
-        if (!$value) {
-            $value = isset($this->bindings[ $key ]) ? $this->bindings[ $key ] : $key;
+        if (isset($this->bindings[$key])) {
+            $value = $this->bindings[$key];
         }
 
-        // Check if its a function
-        if ( $key === $value || $key instanceof Closure || is_string( $value ) ) {
+        if (!$value) {
+            $value = $key;
+        }
+
+        if ( is_string( $value ) ) {
             $value = $this->build( $value );
         }
 

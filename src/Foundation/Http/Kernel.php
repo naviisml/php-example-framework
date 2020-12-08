@@ -18,9 +18,16 @@ class Kernel
      *
      * @var array
      */
-    protected $bootstrapper = [
-        \Navel\Foundation\Http\Providers\AppServiceProvider::class
+    protected $bootstrappers = [
+        \Navel\Framework\Bootstrap\BootProvider::class,
     ];
+
+    /**
+     * The applications middleware
+     *
+     * @var [type]
+     */
+    protected $middleware = [];
 
     /**
      * The constructor
@@ -56,7 +63,7 @@ class Kernel
     public function bootstrap()
     {
         if( !$this->app->booted ) {
-            $this->app->bootWith( $this->bootstrapper );
+            $this->app->bootWith( $this->bootstrappers );
         }
     }
 
@@ -67,5 +74,6 @@ class Kernel
         // print_r( $this->app->instance('router') );
 
         // Send request to Router
+        // Do something with [$this->middleware]
     }
 }

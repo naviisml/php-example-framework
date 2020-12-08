@@ -47,8 +47,10 @@ class Request
      */
     public function capture()
     {
-        $this->getMethod();
+        $this->parseRequest();
+
         $this->getHeaders();
+        $this->getMethod();
         $this->getParameters();
 
         return $this;
@@ -84,24 +86,41 @@ class Request
     }
 
     /**
+     * [parseRequest description]
+     * 
+     * @return [type] [description]
+     */
+    protected function parseRequest()
+    {
+        foreach ( $_SERVER as $key => $value ) {
+            $this->request[ $key ] = $value;
+        }
+
+        return $this->request;
+    }
+
+    /**
      * Retrieve the current header's method
      *
      * @return string $this->method
      */
-    private function getMethod()
+    protected function getMethod()
     {
         $this->method = "unknown";
 
         return $this->method;
     }
 
-    private function getHeaders()
+    /**
+     * [getHeaders description]
+     *
+     * @return [type] [description]
+     */
+    protected function getHeaders()
     {
-        foreach ($_SERVER as $key => $value) {
+        foreach ( $this->request as $key => $value ) {
             if (strpos($key, 'HTTP_') === 0) {
                 $this->headers[$key] = $value;
-            } else {
-                $this->server[$key] = $value;
             }
         }
 
@@ -121,17 +140,32 @@ class Request
         return $this->parameters;
     }
 
+    /**
+     * [getFirstParameter description]
+     *
+     * @return [type] [description]
+     */
     public function getFirstParameter()
     {
         return $this->parameter(0);
     }
 
-    private function getHttpParameters()
+    /**
+     * [getHttpParameters description]
+     *
+     * @return [type] [description]
+     */
+    protected function getHttpParameters()
     {
         // Add to [$this->httpParameters] && [$this->parameters]
     }
 
-    private function getPostParameters()
+    /**
+     * [getPostParameters description]
+     *
+     * @return [type] [description]
+     */
+    protected function getPostParameters()
     {
         // Add to [$this->postParameters] && [$this->parameters]
     }

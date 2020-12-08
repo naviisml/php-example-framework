@@ -34,8 +34,7 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
-        \Navel\Foundation\Http\Providers\AppServiceProvider::class,
-        \Navel\Foundation\Http\Providers\ConsoleServiceProvider::class
+        \Navel\Framework\Bootstrap\BootProvider::class,
     ];
 
     /**

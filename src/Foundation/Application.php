@@ -42,6 +42,13 @@ class Application extends Container
     protected $bootstrappers = [];
 
     /**
+     * The applications service providers
+     *
+     * @var [type]
+     */
+    protected $serviceProviders = [];
+
+    /**
      * The constructor function
      *
      * @param string $base_dir The applications base dir
@@ -67,10 +74,10 @@ class Application extends Container
         $this->hasBeenBootstrapped = true;
 
         if( is_array( $bootstrappers ) ) {
-            $this->bootstrappers = array_merge( $this->bootstrappers, $bootstrappers );
+            foreach ( $bootstrappers as $bootstrapper ) {
+                $this->make( $bootstrapper )->bootstrap( $this );
+            }
         }
-
-        $this->boot();
     }
 
     /**
@@ -84,10 +91,11 @@ class Application extends Container
             return;
         }
 
-        // Bootstrap the application
-        array_walk($this->bootstrappers, function ($p) {
-            $this->resolveProvider($p);
-        });
+        if( is_array( $this->serviceProviders ) ) {
+            foreach ( $this->serviceProviders as $provider ) {
+                $this->bootProvider( $provider );
+            }
+        }
 
         $this->booted = true;
     }
@@ -157,6 +165,10 @@ class Application extends Container
             $provider = $this->resolveProvider( $provider );
         }
 
+        $provider->register();
+
+        $this->serviceProviders[] = $provider;
+
         // Check if the application has been booted before executing the Provider
         if( $this->isBooted() ) {
             $this->bootProvider( $provider );
@@ -171,7 +183,13 @@ class Application extends Container
      */
     public function bootProvider( $provider )
     {
-        return $provider;
+        if ( is_string($provider) ) {
+            $provider = $this->make( $provider );
+        }
+
+        if ( method_exists( $provider, 'boot' ) ) {
+            $provider->boot();
+        }
     }
 
     /**
