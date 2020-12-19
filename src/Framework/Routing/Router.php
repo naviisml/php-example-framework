@@ -32,11 +32,35 @@ class Router
      */
     protected $routeAction;
 
-    /**
-     * [__construct description]
-     */
     public function __construct()
     {
 
+    }
+
+    public function getRoute( $uri )
+    {
+        if( !$route = $this->routes[ $uri ] ) {
+            throw new \Exception("[{$uri}] doesnt exist.");
+        }
+
+        $route();
+    }
+
+    public function getRouteByName( $name )
+    {
+        if( !$uri = $this->routeAlias[ $name ] ) {
+            throw new \Exception("[{$name}] doesnt exist.");
+        }
+
+        return $this->getRoute( $uri );
+    }
+
+    public function addRoute( $method, $uri, $callback, $alias = null )
+    {
+        $this->routes[ $uri ] = $callback;
+
+        if( $alias ) {
+            $this->routeAlias[ $alias ] = $uri;
+        }
     }
 }

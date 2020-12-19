@@ -24,6 +24,16 @@ class Kernel
     /**
      * [protected description]
      *
+     * @var [type]
+     */
+    protected $coreCommands = [
+        \Navel\Foundation\Console\Commands\ServeCommand::class,
+        \Navel\Foundation\Console\Commands\TestCommand::class,
+    ];
+
+    /**
+     * [protected description]
+     *
      * @var array
      */
     protected $commands = [];
@@ -97,10 +107,10 @@ class Kernel
      */
     protected function resolveCoreCommands()
     {
-        foreach ([
-            \Navel\Foundation\Console\Commands\ServeCommand::class,
-        ] as $key => $command) {
-            $this->registerCommand( $command );
+        if( is_array( $this->coreCommands ) ) {
+            foreach ( $this->coreCommands as $key => $command ) {
+                $this->registerCommand( $command );
+            }
         }
     }
 

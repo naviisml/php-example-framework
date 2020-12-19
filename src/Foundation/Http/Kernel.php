@@ -2,6 +2,7 @@
 
 namespace Navel\Foundation\Http;
 
+use Navel\Helpers\Route;
 use Navel\Foundation\Application;
 
 class Kernel
@@ -71,9 +72,13 @@ class Kernel
     {
         $this->bootstrap();
 
-        // print_r( $this->app->instance('router') );
-
         // Send request to Router
         // Do something with [$this->middleware]
+
+        Route::get("/test", function() {
+            echo 'Test';
+        });
+
+        debug( $this->app->make('router')->getRoute('/test') );
     }
 }

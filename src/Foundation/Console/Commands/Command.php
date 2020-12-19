@@ -2,6 +2,8 @@
 
 namespace Navel\Foundation\Console\Commands;
 
+use Navel\Helpers\Console\Question;
+
 class Command
 {
     /**

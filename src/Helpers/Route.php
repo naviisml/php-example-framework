@@ -2,6 +2,8 @@
 
 namespace Navel\Helpers;
 
+use Navel\Framework\Container\Container;
+
 class Route
 {
     /**
@@ -9,7 +11,7 @@ class Route
      *
      * @var \Navel\Foundation\Router
      */
-    protected $router;
+    public static $router;
 
     /**
      * The route method
@@ -32,18 +34,19 @@ class Route
      */
     protected $routeAlias;
 
-    protected function addRoute( $method, $action, $alias )
+    public static function getInstance()
     {
+        if ( is_null( static::$router ) ) {
+            static::$router = Container::getInstance()->make('router');
+        }
 
+        return static::$router;
     }
 
-    public function get()
+    public static function get( $uri, $callback )
     {
-        $this->addRoute( $method, $action, $alias );
-    }
+        $router = self::getInstance();
 
-    public function post()
-    {
-        $this->addRoute( $method, $action, $alias );
+        $router->addRoute( "GET", $uri, $callback, $alias = null );
     }
 }
