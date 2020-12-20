@@ -44,6 +44,7 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
+        \Navel\Framework\Bootstrap\RegisterFacades::class,
         \Navel\Framework\Bootstrap\BootProvider::class,
     ];
 

@@ -2,6 +2,7 @@
 
 namespace Navel\Foundation\Http\Providers;
 
+use Navel\Helpers\Route;
 use Navel\Foundation\Http\Providers\ServiceProvider;
 
 class RoutingServiceProvider extends ServiceProvider
@@ -13,6 +14,6 @@ class RoutingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // 
+
     }
 }

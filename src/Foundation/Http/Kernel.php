@@ -2,7 +2,6 @@
 
 namespace Navel\Foundation\Http;
 
-use Navel\Helpers\Route;
 use Navel\Foundation\Application;
 
 class Kernel
@@ -20,6 +19,7 @@ class Kernel
      * @var array
      */
     protected $bootstrappers = [
+        \Navel\Framework\Bootstrap\RegisterFacades::class,
         \Navel\Framework\Bootstrap\BootProvider::class,
     ];
 
@@ -74,11 +74,5 @@ class Kernel
 
         // Send request to Router
         // Do something with [$this->middleware]
-
-        Route::get("/test", function() {
-            echo 'Test';
-        });
-
-        debug( $this->app->make('router')->getRoute('/test') );
     }
 }
