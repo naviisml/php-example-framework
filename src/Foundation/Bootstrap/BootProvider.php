@@ -1,6 +1,6 @@
 <?php
 
-namespace Navel\Framework\Bootstrap;
+namespace Navel\Foundation\Bootstrap;
 
 use Navel\Foundation\Application;
 
