@@ -27,7 +27,8 @@ class Kernel
      */
     protected $coreCommands = [
         \Navel\Foundation\Console\Commands\ServeCommand::class,
-        \Navel\Foundation\Console\Commands\TestCommand::class,
+        \Navel\Foundation\Console\Commands\Database\MigrateCommand::class,
+        \Navel\Foundation\Console\Commands\Database\SeedCommand::class,
     ];
 
     /**

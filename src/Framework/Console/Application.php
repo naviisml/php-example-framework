@@ -142,7 +142,7 @@ class Application
     {
         $command = $this->build( $callback );
 
-        $this->add( $command->name, $callback );
+        $this->add( $command, $callback );
 
         return $this;
     }
@@ -155,9 +155,15 @@ class Application
      */
     public function add( $command, $callback )
     {
-        // Get the command: $name, $description etc etc
-        // Add to arrays
-        $this->commands[ $command ] = $callback;
+        if( isset( $this->commands[ $command->name ] ) ) {
+            throw new Exception("Command {$command->name} already exists.", 500);
+        }
+
+        $this->commands[ $command->name ] = $callback;
+
+        if( $command->hidden === false ) {
+            $this->commandList[ $command->name ] = $command->description;
+        }
     }
 
     /**
