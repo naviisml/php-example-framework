@@ -2,7 +2,7 @@
 
 namespace Navel\Foundation\Http;
 
-use Navel\Foundation\Application;
+use Navel\Framework\Http\Application;
 
 class Kernel
 {
@@ -14,13 +14,20 @@ class Kernel
     protected $app;
 
     /**
+     * The Http application instance
+     *
+     * @var \Navel\Framework\Http\Application
+     */
+    protected $web;
+
+    /**
      * The bootstrap classes for the application.
      *
      * @var array
      */
     protected $bootstrappers = [
-        \Navel\Framework\Bootstrap\RegisterFacades::class,
-        \Navel\Framework\Bootstrap\BootProvider::class,
+        \Navel\Foundation\Bootstrap\RegisterFacades::class,
+        \Navel\Foundation\Bootstrap\BootProvider::class,
     ];
 
     /**
@@ -33,7 +40,7 @@ class Kernel
     /**
      * The constructor
      */
-    public function __construct( Application $app )
+    public function __construct( \Navel\Foundation\Application $app )
     {
         $this->app = $app;
     }
@@ -43,10 +50,10 @@ class Kernel
      *
      * @return [type] [description]
      */
-    public function handle()
+    public function handle( $request )
     {
         try {
-            $response = $this->sendRequestThroughRouter();
+            $response = $this->sendRequestThroughRouter( $request );
         } catch (Exception $e) {
             $response = $e;
         } catch (Throwable $e) {
@@ -68,11 +75,21 @@ class Kernel
         }
     }
 
-    private function sendRequestThroughRouter()
+    protected function sendRequestThroughRouter( $request )
     {
         $this->bootstrap();
 
+        debug( $this->getApplication() );
         // Send request to Router
         // Do something with [$this->middleware]
+    }
+
+    protected function getApplication()
+    {
+        if( is_null( $this->web ) ) {
+            $this->web = ( new Application( $this->app ) );
+        }
+
+        return $this->web;
     }
 }

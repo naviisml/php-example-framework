@@ -2,7 +2,6 @@
 
 namespace Navel\Foundation\Console;
 
-use Navel\Foundation\Application;
 use Navel\Framework\Console\Application as Console;
 
 class Kernel
@@ -44,14 +43,14 @@ class Kernel
      * @var array
      */
     protected $bootstrapper = [
-        \Navel\Framework\Bootstrap\RegisterFacades::class,
-        \Navel\Framework\Bootstrap\BootProvider::class,
+        \Navel\Foundation\Bootstrap\RegisterFacades::class,
+        \Navel\Foundation\Bootstrap\BootProvider::class,
     ];
 
     /**
      * The constructor
      */
-    public function __construct( Application $app )
+    public function __construct( \Navel\Foundation\Application $app )
     {
         $this->app = $app;
 
@@ -120,7 +119,7 @@ class Kernel
      *
      * @return [type] [description]
      */
-    private function getConsole()
+    public function getConsole()
     {
         if( is_null( $this->console ) ) {
             $this->console = ( new Console( $this->app ) )->resolveCommands( $this->commands );
