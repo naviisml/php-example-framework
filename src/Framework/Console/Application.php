@@ -2,7 +2,6 @@
 
 namespace Navel\Framework\Console;
 
-use Navel\Helpers\File;
 use Navel\Helpers\Console\ArgvInput;
 use Exception;
 
@@ -11,16 +10,9 @@ class Application
     /**
      * The application instance
      *
-     * @var Navel\Foundation\Application
+     * @var \Navel\Foundation\Application
      */
     protected $app;
-
-    /**
-     * The console instance
-     *
-     * @var Navel\Foundation\Console\Application
-     */
-    protected $console;
 
     /**
      * [protected description]
@@ -31,86 +23,66 @@ class Application
 
     /**
      * [protected description]
-     *
+     * 
      * @var [type]
      */
     protected $commandList;
 
     /**
-     * [protected description]
+     * The constructor function
      *
-     * @var [type]
-     */
-    protected $aliases;
-
-    /**
-     * [protected description]
-     *
-     * @var [type]
-     */
-    protected $lastOutput;
-
-    /**
-     * [__construct description]
-     *
-     * @param [type] $app [description]
+     * @param Application $app
      */
     public function __construct( \Navel\Foundation\Application $app )
     {
         $this->app = $app;
-        $this->console = $this;
     }
 
     /**
      * [run description]
      *
-     * @param  [type] $input [description]
-     * @return [type]        [description]
+     * @param  [type] $command [description]
+     * @return [type]          [description]
      */
-    public function run( $input = null )
+    public function run( $command = null )
     {
-        $command = $this->getCommand(
-            $input = $input ?: new ArgvInput
+        $commandName = $this->getCommandName(
+            $command ?: new ArgvInput
         );
 
-        $this->call( $command );
+        $this->call( $commandName );
     }
 
     /**
      * [call description]
      *
-     * @param  [type] $command [description]
-     * @return [type]          [description]
+     * @param  [type] $commandName [description]
+     * @return [type]              [description]
      */
-    public function call( $command = null )
+    public function call( $commandName = null )
     {
-        $command = $this->build(
-            $input = $command
-        );
+        $command = $this->commands[$commandName] ?: null;
 
-        $output = $command->run();
+        if( is_null($command) ) {
+            throw new Exception( "Command [{$commandName}] doesn't exist.", 404 );
+        }
 
-        $this->lastOutput = $output;
+        $command->run( $this );
 
-        return $output;
+        return $command;
     }
 
     /**
-     * [parseCommand description]
+     * [getCommandName description]
      *
-     * @param  [type] $input [description]
-     * @return [type]        [description]
+     * @param  [type] $command [description]
+     * @return [type]          [description]
      */
-    public function parseCommand( $input )
+    public function getCommandName( $command )
     {
-        $command = $input->parameter(1);
+        $commandName = explode( ' ', trim( $command->name ) )[0];
 
-        // Check if [$command] parameter is passed
-        if( is_null( $input ) || !$command ) {
-            throw new Exception( "[\$command] is null.", 404 );
-        }
-
-        return [ $command, $input->parameters() ?? null ];
+        return $commandName ?: $command;
     }
 
     /**
@@ -121,77 +93,44 @@ class Application
      */
     public function resolveCommands( $commands )
     {
-        if ( !is_array( $commands ) ) {
-            return $this->resolveCommand( $commands );
-        }
-
-        foreach ( $commands as $command ) {
-            $this->resolveCommand( $command );
+        if( is_array( $commands ) ) {
+            foreach( $commands as $command ) {
+                $this->resolve( $command );
+            }
         }
 
         return $this;
     }
 
     /**
-     * [resolveCommand description]
+     * [resolve description]
      *
-     * @param  [type] $callback [description]
-     * @return [type]           [description]
+     * @param  [type] $command [description]
+     * @return [type]          [description]
      */
-    public function resolveCommand( $callback )
+    public function resolve( $command )
     {
-        $command = $this->build( $callback );
-
-        $this->add( $command, $callback );
-
-        return $this;
+        $this->add( $this->app->make( $command ) );
     }
 
     /**
      * [add description]
      *
-     * @param [type] $command  [description]
-     * @param [type] $callback [description]
+     * @param [type] $command [description]
      */
-    public function add( $command, $callback )
+    public function add( $command = null )
     {
-        if( isset( $this->commands[ $command->name ] ) ) {
-            throw new Exception("Command {$command->name} already exists.", 500);
-        }
+        $commandName = $this->getCommandName(
+            $command ?: new ArgvInput
+        );
 
-        $this->commands[ $command->name ] = $callback;
+        $this->commands[ $commandName ] = $command;
 
-        if( $command->hidden === false ) {
-            $this->commandList[ $command->name ] = $command->description;
-        }
-    }
-
-    /**
-     * [build description]
-     *
-     * @param  [type] $value [description]
-     * @return [type]        [description]
-     */
-    public function build( $value )
-    {
-        return new $value($this);
-    }
-
-    /**
-     * [getCommand description]
-     *
-     * @param  [type] $input [description]
-     * @return [type]        [description]
-     */
-    public function getCommand( $input )
-    {
-        [$command, $parameters] = $this->parseCommand( $input );
-
-        // Check if [$command] exists in [$this->commands]
-        if( is_null( $callback = $this->commands[ $command ] ?? null ) ) {
-            throw new Exception( "Command [{$command}] doesnt exist.", 404 );
-        }
-
-        return $callback;
+        $this->commandList[ $commandName ] = [
+            "name" => $commandName,
+            "description" => $command->description,
+            "help" => $command->help,
+            "hidden" => $command->hidden,
+        ];
     }
 }

@@ -26,8 +26,7 @@ class Kernel
      * @var array
      */
     protected $bootstrappers = [
-        \Navel\Foundation\Bootstrap\RegisterFacades::class,
-        \Navel\Foundation\Bootstrap\BootProvider::class,
+        \Navel\Foundation\Bootstrap\BootProviders::class,
     ];
 
     /**

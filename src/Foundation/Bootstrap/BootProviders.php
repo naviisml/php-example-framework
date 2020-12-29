@@ -2,10 +2,9 @@
 
 namespace Navel\Foundation\Bootstrap;
 
-use Navel\Helpers\Facades\Facade;
 use Navel\Foundation\Application;
 
-class RegisterFacades
+class BootProviders
 {
     /**
      * [boot description]
@@ -14,6 +13,6 @@ class RegisterFacades
      */
     public function bootstrap( Application $app )
     {
-        Facade::setFacadeInstance( $app );
+        $app->boot();
     }
 }

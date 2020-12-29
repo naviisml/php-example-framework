@@ -6,6 +6,8 @@ use Navel\Helpers\Request;
 
 class ArgvInput extends Request
 {
+    public $name;
+
     /**
      * [test description]
      *
@@ -18,12 +20,14 @@ class ArgvInput extends Request
 
     /**
      * [capture description]
-     * 
+     *
      * @return [type] [description]
      */
     public function capture()
     {
         $this->getArgvar();
+
+        $this->name = $this->parameter(1);
 
         parent::capture();
     }

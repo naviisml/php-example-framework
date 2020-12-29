@@ -23,17 +23,6 @@ class Kernel
     /**
      * [protected description]
      *
-     * @var [type]
-     */
-    protected $coreCommands = [
-        \Navel\Foundation\Console\Commands\ServeCommand::class,
-        \Navel\Foundation\Console\Commands\Database\MigrateCommand::class,
-        \Navel\Foundation\Console\Commands\Database\SeedCommand::class,
-    ];
-
-    /**
-     * [protected description]
-     *
      * @var array
      */
     protected $commands = [];
@@ -43,9 +32,8 @@ class Kernel
      *
      * @var array
      */
-    protected $bootstrapper = [
-        \Navel\Foundation\Bootstrap\RegisterFacades::class,
-        \Navel\Foundation\Bootstrap\BootProvider::class,
+    protected $bootstrappers = [
+        \Navel\Foundation\Bootstrap\BootProviders::class,
     ];
 
     /**
@@ -54,8 +42,6 @@ class Kernel
     public function __construct( \Navel\Foundation\Application $app )
     {
         $this->app = $app;
-
-        $this->resolveCoreCommands();
     }
 
     /**
@@ -85,34 +71,40 @@ class Kernel
      */
     public function bootstrap()
     {
-        if( ! $this->app->booted ) {
-            $this->app->bootWith( $this->bootstrapper );
+        if( $this->app->booted ) {
+            return;
+        }
+
+        $this->app->bootWith( $this->bootstrappers );
+
+        $this->registerCommands();
+    }
+
+    /**
+     * [registerCommands description]
+     *
+     * @return [type] [description]
+     */
+    protected function registerCommands()
+    {
+        foreach ([
+            \Navel\Foundation\Console\Commands\ServeCommand::class,
+            \Navel\Foundation\Console\Commands\MigrateCommand::class,
+            \Navel\Foundation\Console\Commands\SeedCommand::class,
+        ] as $key => $command ) {
+            $this->registerCommand( $command );
         }
     }
 
     /**
      * [registerCommand description]
      *
-     * @param  [type] $class [description]
-     * @return [type]        [description]
+     * @param  [type] $command [description]
+     * @return [type]          [description]
      */
     public function registerCommand( $command )
     {
-        $this->getConsole()->resolveCommand( $command );
-    }
-
-    /**
-     * [resolveCoreCommands description]
-     *
-     * @return [type] [description]
-     */
-    protected function resolveCoreCommands()
-    {
-        if( is_array( $this->coreCommands ) ) {
-            foreach ( $this->coreCommands as $key => $command ) {
-                $this->registerCommand( $command );
-            }
-        }
+        $this->commands[] = $command;
     }
 
     /**

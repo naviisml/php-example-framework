@@ -1,27 +1,27 @@
 <?php
 
-namespace Navel\Foundation\Console\Commands\Database;
+namespace Navel\Foundation\Console\Commands;
 
 use Navel\Helpers\Request;
 use Navel\Helpers\Console\ArgvInput;
 use Navel\Helpers\Console\Executable;
 use Navel\Foundation\Console\Commands\Command;
 
-class SeedCommand extends Command
+class MigrateCommand extends Command
 {
     /**
      * [public description]
      *
      * @var [type]
      */
-    public $name = 'db:seed';
+    public $name = 'db:migrate';
 
     /**
      * [public description]
      *
      * @var [type]
      */
-    public $description = 'Database seeder';
+    public $description = 'Database migrate';
 
     /**
      * [public description]

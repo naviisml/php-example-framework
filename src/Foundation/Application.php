@@ -230,8 +230,12 @@ class Application extends Container
      *
      * @return [type] [description]
      */
-    public function path()
+    public function basePath( $path = null )
     {
+        if( !is_null( $path ) ) {
+            return $this->base_dir . $path;
+        }
+
         return $this->base_dir;
     }
 }
