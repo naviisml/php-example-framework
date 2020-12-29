@@ -2,11 +2,13 @@
 
 namespace Navel\Helpers\Facades;
 
-class Request
+use Navel\Helpers\Facades\Facade;
+
+class Example extends Facade
 {
     public static function __callStatic( $method, $args )
     {
-        $instance = \Navel\Helpers\Request::class;
+        $instance = new \Navel\Helpers\Example();
 
         return $instance->$method( ...$args );
     }

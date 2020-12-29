@@ -1,22 +1,10 @@
 <?php
 
-namespace Navel\Helpers\Console;
+namespace Navel\Helpers;
 
-use Navel\Helpers\Request;
-
-class ArgvInput extends Request
+class ArgvInput
 {
     public $name;
-
-    /**
-     * [test description]
-     *
-     * @return [type] [description]
-     */
-    public static function test()
-    {
-        return (new self);
-    }
 
     /**
      * [capture description]
@@ -28,8 +16,6 @@ class ArgvInput extends Request
         $this->getArgvar();
 
         $this->name = $this->parameter(1);
-
-        parent::capture();
     }
 
     /**
@@ -58,5 +44,24 @@ class ArgvInput extends Request
         }
 
         return $this->parameters;
+    }
+
+    /**
+     * Retrieve a specific parameter from the request
+     *
+     * @param  string $value
+     * @return string $parameter
+     */
+    public function parameter( $value = null )
+    {
+        if ( is_null( $value ) ) {
+            throw new \Exception('Parameter value is empty');
+        }
+
+        if ( !array_key_exists( $value, $this->parameters ) ) {
+            return null;
+        }
+
+        return $this->parameters[$value];
     }
 }

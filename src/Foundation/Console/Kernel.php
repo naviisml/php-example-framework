@@ -88,6 +88,7 @@ class Kernel
     protected function registerCommands()
     {
         foreach ([
+            \Navel\Foundation\Console\Commands\HelpCommand::class,
             \Navel\Foundation\Console\Commands\ServeCommand::class,
             \Navel\Foundation\Console\Commands\MigrateCommand::class,
             \Navel\Foundation\Console\Commands\SeedCommand::class,

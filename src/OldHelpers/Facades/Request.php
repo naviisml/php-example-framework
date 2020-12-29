@@ -6,9 +6,14 @@ use Navel\Helpers\Facades\Facade;
 
 class Request extends Facade
 {
+    public static function getHelperInstance()
+    {
+        return 'request';
+    }
+
     public static function __callStatic( $method, $args )
     {
-        $instance = new \Navel\Helpers\Request();
+        $instance = self::resolveHelperInstance( self::getHelperInstance() );
 
         return $instance->$method( ...$args );
     }

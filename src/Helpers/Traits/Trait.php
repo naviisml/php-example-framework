@@ -2,7 +2,7 @@
 
 namespace Navel\Helpers\Traits;
 
-class Request
+trait Trait
 {
-    
+
 }

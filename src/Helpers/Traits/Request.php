@@ -1,8 +1,10 @@
 <?php
 
-namespace Navel\Helpers;
+namespace Navel\Helpers\Traits;
 
-class Request
+use Navel\Helpers\Traits\Trait;
+
+trait Request
 {
     public function test()
     {

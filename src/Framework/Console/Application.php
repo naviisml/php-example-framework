@@ -2,7 +2,6 @@
 
 namespace Navel\Framework\Console;
 
-use Navel\Helpers\Console\ArgvInput;
 use Exception;
 
 class Application
@@ -23,7 +22,7 @@ class Application
 
     /**
      * [protected description]
-     * 
+     *
      * @var [type]
      */
     protected $commandList;
@@ -46,9 +45,11 @@ class Application
      */
     public function run( $command = null )
     {
-        $commandName = $this->getCommandName(
+        $commandName = $_SERVER["argv"][1];
+
+        /*$commandName = $this->getCommandName(
             $command ?: new ArgvInput
-        );
+        );*/
 
         $this->call( $commandName );
     }
@@ -67,7 +68,7 @@ class Application
             throw new Exception( "Command [{$commandName}] doesn't exist.", 404 );
         }
 
-        $command->run( $this );
+        $command->run();
 
         return $command;
     }
@@ -82,7 +83,7 @@ class Application
     {
         $commandName = explode( ' ', trim( $command->name ) )[0];
 
-        return $commandName ?: $command;
+        return $commandName;
     }
 
     /**
