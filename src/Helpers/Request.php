@@ -8,8 +8,11 @@ class Request
 {
     use RequestTrait;
 
+    /**
+     * [__construct description]
+     */
     public function __construct()
     {
-        
+        //
     }
 }
