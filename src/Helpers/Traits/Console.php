@@ -21,6 +21,23 @@ trait Console
     public $output;
 
     /**
+     * [protected description]
+     *
+     * @var [type]
+     */
+    protected $defaultColor = "\033[0m";
+
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
+    protected $outputColors = [
+        "white" => "\033[0m",
+        "red" => "\033[31m",
+    ];
+
+    /**
      * [question description]
      *
      * @param  [type] $question [description]
@@ -80,7 +97,7 @@ trait Console
      */
     public function anticipate( $text, $callback, $hidden = false )
     {
-        $this->prompt( $text );
+        $this->prompt([$this->color('red'), $text]);
 
         $output = $this->output( $hidden );
 
@@ -121,8 +138,23 @@ trait Console
      * @param  [type] $text [description]
      * @return [type]       [description]
      */
-    public function prompt( $text )
+    public function prompt( $text, $inline = false )
     {
-        echo "\033[31m{$text}\033[0m\n";
+        if( is_array( $text ) ) {
+            $text = implode($text);
+        }
+
+        echo $text . $this->defaultColor . ($inline ? null : "\n");
+    }
+
+    /**
+     * [color description]
+     *
+     * @param  [type] $color [description]
+     * @return [type]        [description]
+     */
+    public function color( $color )
+    {
+        return $this->outputColors[ $color ] ?: $this->defaultColor;
     }
 }
