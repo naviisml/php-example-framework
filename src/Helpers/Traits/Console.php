@@ -2,8 +2,6 @@
 
 namespace Navel\Helpers\Traits;
 
-use Navel\Helpers\Traits\Trait;
-
 trait Console
 {
     /**
