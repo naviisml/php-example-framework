@@ -3,7 +3,7 @@
 namespace Navel\Foundation\Console\Commands;
 
 use Navel\Helpers\Request;
-use Navel\Helpers\Console\ArgvInput;
+use Navel\Helpers\Facades\ArgvInput;
 use Navel\Helpers\Console\Executable;
 use Navel\Foundation\Console\Commands\Command;
 
@@ -51,7 +51,7 @@ class ServeCommand extends Command
      */
     public function run()
     {
-        $argv = ArgvInput::test();
+        $argv = ArgvInput::capture();
 
         $host = $argv->parameter('host') ?? 'localhost';
         $port = $argv->parameter('port') ?? '8080';

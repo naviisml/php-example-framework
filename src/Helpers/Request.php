@@ -2,17 +2,12 @@
 
 namespace Navel\Helpers;
 
-use Navel\Helpers\Traits\Request as RequestTrait;
-
 class Request
 {
-    use RequestTrait;
+    protected $parameters;
 
-    /**
-     * [__construct description]
-     */
-    public function __construct()
+    public function parameter( $key )
     {
-        //
+        return $parameters[ $key ] ?? null;
     }
 }

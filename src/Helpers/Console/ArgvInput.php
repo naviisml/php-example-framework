@@ -1,8 +1,10 @@
 <?php
 
-namespace Navel\Helpers;
+namespace Navel\Helpers\Console;
 
-class ArgvInput
+use Navel\Helpers\Request;
+
+class ArgvInput extends Request
 {
     public $name;
 
@@ -16,6 +18,8 @@ class ArgvInput
         $this->getArgvar();
 
         $this->name = $this->parameter(1);
+
+        return $this;
     }
 
     /**

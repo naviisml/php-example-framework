@@ -2,6 +2,7 @@
 
 namespace Navel\Framework\Console;
 
+use Navel\Helpers\ArgvInput;
 use Exception;
 
 class Application

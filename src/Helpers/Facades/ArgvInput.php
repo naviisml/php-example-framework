@@ -2,8 +2,17 @@
 
 namespace Navel\Helpers\Facades;
 
-class Facade
+use Navel\Helpers\Facades\Facade;
+
+class ArgvInput extends Facade
 {
+    /**
+     * [protected description]
+     *
+     * @var [type]
+     */
+    protected static $facade = \Navel\Helpers\Console\ArgvInput::class;
+
     /**
      * [__callStatic description]
      *
